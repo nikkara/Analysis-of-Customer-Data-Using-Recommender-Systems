@@ -2,34 +2,45 @@
 # MovieLens Recommender System Analysis
 
 ## Project Description
-This repository contains our project for analyzing customer data using the MovieLens dataset. The primary objective is to configure, evaluate, and compare different recommender system models. We focus on building and assessing a neighborhood-based method and a matrix factorization-based method against a baseline. This project aims to understand user preferences and improve recommendation accuracy.
+This project involves the development and optimization of two types of recommender system models using the MovieLens dataset: one based on neighborhood methods and another on matrix factorization. Our objective is to enhance the quality of recommendations through meticulous hyperparameter tuning and comparative analysis against a baseline model.
 
-## Dataset Information
-The project uses the **MovieLens dataset** provided by GroupLens Research, which contains over 27 million five-star ratings across 58,098 movies and 283,228 users. All users have rated at least one movie. The dataset contains the following information:
-- **UserID:** Unique identifier for each user
-- **MovieID:** Unique identifier for each movie
-- **Rating:** User-assigned rating for the movie (0.5 to 5.0 stars)
-- **Timestamp:** When the rating was given, in UTC seconds since 1970
+## Dataset Overview
+We utilize the MovieLens dataset, which comprises over 27 million ratings across 58,098 movies by 283,228 users. This rich dataset provides a foundation for exploring user preferences and improving recommendation accuracy.
 
-The dataset provides valuable insights into user preferences and is suitable for collaborative filtering techniques.
+## Exploratory Data Analysis (EDA)
+The initial phase of our project involves an extensive EDA to understand underlying patterns within the data:
+- **Stratified Sampling**: We employ StratifiedShuffleSplit to ensure each subgroup is represented, improving the reliability of our insights.
+- **Comparative Analysis**: We analyze both the sampled and original datasets to confirm consistency across distributions.
 
-## Models Used
-The project uses two different models:
-1. **Neighborhood-Based Method:**
-   - Implements the K-Nearest Neighbors (KNN) algorithm.
-   - Uses similarities between user ratings to find similar neighbors and predict ratings.
-   - Hyperparameters tuned include the similarity function (cosine similarity, Pearson correlation) and the minimum number of neighbors.
+## Models and Hyperparameter Tuning
+### KNNWithZScore (Neighborhood-Based Method)
+- **Parameters**:
+  - `k`: Number of neighbors. Chosen to enhance personalized recommendations.
+  - `min_k`: Minimum number of neighbors required for predictions, allowing inclusivity for new users.
+  - `sim_options`: Pearson correlation for similarity, focusing on user rating patterns.
+  - `user_based`: Both user-focused and movie-focused strategies are evaluated to optimize personalization.
 
-2. **Matrix Factorization-Based Method:**
-   - Implements a matrix factorization algorithm, such as SVD.
-   - Decomposes the user-item rating matrix into lower-dimensional matrices.
-   - Hyperparameters tuned include the number of factors and learning rate.
+### SVD++ (Matrix Factorization-Based Method)
+- **Parameters**:
+  - `n_factors`: Number of latent factors to capture complex patterns.
+  - `n_epochs`: Number of iterations for training.
+  - `lr_all`: Learning rate for updates.
+  - `reg_all`: Regularization to prevent overfitting.
+  - `biased`: Incorporation of bias terms to enhance model predictions.
 
-**Baseline:**
-- The baseline is a **normal predictor** that makes random predictions based on the distribution of the training set ratings.
+## Results
+Our analysis demonstrates that the SVD++ model performed the best in terms of RMSE, indicating its superior ability to handle both explicit and implicit feedback. Key findings include:
+
+- The **SVD++ model** had a 5% lower RMSE compared to the KNNWithZScore model, suggesting better accuracy.
+- Hyperparameter tuning showed that reducing the `n_factors` in SVD++ below 20 decreased performance.
+- Neighborhood methods were particularly effective for users with a high number of ratings.
+
+For a detailed visualization of the results, see the [results folder](link-to-results-folder).
+
+
 
 ## Installation
-To run this project locally, follow these steps:
+To set up the project, clone the repository and install the required libraries:
 ```bash
 git clone https://github.com/yourusername/movielens-recommender-analysis.git
 cd movielens-recommender-analysis
